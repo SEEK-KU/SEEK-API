@@ -7,12 +7,7 @@ exports.getAllUsers = function(req, res) {
   var x = User.find({}, function(err, user) {
     if (err)
       res.send(err)
-      console.log(">>>>>>" + typeof user)
-      var obj2 = {
-        user: user,
-        order: user
-      }
-    res.json(obj2)
+    res.json(user)
   })
 }
 
