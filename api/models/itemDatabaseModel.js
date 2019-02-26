@@ -1,12 +1,13 @@
+//For view element, not use for code
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ItemsSchema = new Schema ({
-  title: String,
+  postId: String,
+  menuName: String,
   price: Number,
   qty: Number,
-  note: String
 })
 
-module.exports = mongoose.model('Item', ItemSchema)
+module.exports = mongoose.model('Item', ItemsSchema)

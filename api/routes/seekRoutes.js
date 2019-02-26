@@ -2,20 +2,15 @@
 module.exports = function(app) {
   var userController = require('../controllers/userController');
   var orderController = require('../controllers/orderController');
-  //newfeed(active order)
-  //user info(user, requester order, deliver order)
-  //order info - requester (requester user, order, item)
-  //           - deliver
-  //history - 
 
-  app.route('/users')
+  app.route('/user')
     .get(userController.getAllUsers)
     .post(userController.createNewUser);
 
-  app.route('/users/:stdID')
-    .get(userController.getUserByID)
+  app.route('/user/:userId')
+    .get(userController.getUserById)
     // .put(usersController.updateUserInfo)
-    // .delete(usersController.deleteUser)
+    .delete(userController.deleteUserById)
 
   app.route('/order')
   .post(orderController.createNewOrder) 
@@ -23,11 +18,13 @@ module.exports = function(app) {
   app.route('/order/status/:status')
     .get(orderController.getOrderByStatus)
 
-  app.route('/order/info/:orderID')
+  app.route('/order/:orderId')
     .get(orderController.getOrderInfo)
+    .delete(orderController.deleteOrderById)
+  
+  app.route('/feed')
+    .get(orderController.getNewfeed)
 
-
-
-  // app.route('/order/:orderID')
-  //   .get(orderController.getOrderDetail)
+  app.route('/history/:userId/:requesterOrdeliver')
+    .get(orderController.getHistory)
 }
