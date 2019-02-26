@@ -74,16 +74,16 @@ exports.updateOrderInfo = function(req, res) {
 }
 
 exports.deleteOrderById = function(req, res) {
-  // Order.deleteOne({_id: req.params.orderId}, function(err, order) {
-  //   if(err)
-  //     res.send(err)
-  //   res.send("Delete order sucess!")
-  // });
-  Order.deleteMany({status: 'Active'}, function(err, order) {
+  Order.deleteOne({_id: req.params.orderId}, function(err, order) {
     if(err)
       res.send(err)
     res.send("Delete order sucess!")
   });
+  // Order.deleteMany({status: 'Active'}, function(err, order) {
+  //   if(err)
+  //     res.send(err)
+  //   res.send("Delete order sucess!")
+  // });
 }
 
 exports.getHistory = async function(req, res) {
