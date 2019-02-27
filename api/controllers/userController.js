@@ -40,8 +40,17 @@ exports.deleteUserById = function(req, res) {
   });
 }
 
-exports.upddateUserInfo = function(req, res) {
-  //get old data
-  //map old data with new data
-  //save and update
+exports.updateUserInfo = function(req, res) {
+  User.update({stdId: req.params.userId}, req.body , function(err, user) {
+    if(err)
+      res.send(err);
+    res.send("User Updated!");
+  })
 }
+
+
+// MyModel.update({ age: { $gt: 18 } }, { oldEnough: true }, fn);
+// MyModel.update({ name: 'Tobi' }, { ferret: true }, { multi: true }, function (err, raw) {
+//   if (err) return handleError(err);
+//   console.log('The raw response from Mongo was ', raw);
+// });

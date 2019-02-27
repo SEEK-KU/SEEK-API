@@ -9,7 +9,7 @@ module.exports = function(app) {
 
   app.route('/user/:userId')
     .get(userController.getUserById)
-    // .put(usersController.updateUserInfo)
+    .put(userController.updateUserInfo)
     .delete(userController.deleteUserById)
 
   app.route('/order')
@@ -20,6 +20,7 @@ module.exports = function(app) {
 
   app.route('/order/:orderId')
     .get(orderController.getOrderInfo)
+    .put(orderController.updateOrderInfo)
     .delete(orderController.deleteOrderById)
   
   app.route('/feed')
