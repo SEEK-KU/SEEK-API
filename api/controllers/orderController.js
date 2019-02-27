@@ -70,7 +70,11 @@ exports.createNewOrder = async function(req, res) {
 
 //Update order
 exports.updateOrderInfo = function(req, res) {
-  
+  Order.update({_id: req.params.orderId}, req.body, function (err, order) {
+    if(err)
+      res.send(err)
+    res.send("Order Updated!")
+  })
 }
 
 exports.deleteOrderById = function(req, res) {
