@@ -26,6 +26,6 @@ module.exports = function(app) {
   app.route('/feed')
     .get(orderController.getNewfeed)
 
-  app.route('/history/:userId/:requesterOrdeliver')
+  app.route('/history/:userId/:requesterOrdeliverer')
     .get(orderController.getHistory)
 }
