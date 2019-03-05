@@ -34,9 +34,9 @@ exports.getNewfeed = async function(req, res) {
       location: activeOrder[i].location,
       storeName: activeOrder[i].storeName,
       shippingPoint: activeOrder[i].shippingPoint,
-      itemList: activeOrder[i].temList,
+      itemList: activeOrder[i].itemList,
       createAt: activeOrder[i].createAt,
-      tips: activeOrder[i].tips
+      tip: activeOrder[i].tip
     }
 
     await User.findOne({stdId: activeOrder[i].requesterId}, function(err, user) {

@@ -4,7 +4,6 @@ var express = require('express'),
   mongoose = require('mongoose'),
   User = require('./api/models/userDatabaseModel') //create and model loading
   Order = require('./api/models/orderDatabaseModel')
-  Item = require('./api/models/itemDatabaseModel')
   bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
