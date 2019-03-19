@@ -52,29 +52,22 @@ exports.updateUserInfo = function(req, res) {
 
 exports.getAuthen = async function(req, res) {
   var form = new FormData();
-  form.append("login", "b5810545866");
-  form.append("password", "12324534"); //OUTPUT: failed
+  form.append("login", req.body.username);
+  form.append("password", req.body.password); //OUTPUT: failed
 
-  // axios.post('https://tqf.cpe.ku.ac.th/authen/', mu)
-  // .then(function (response) {
-  //   res.json(response.statusText)
-  //   console.log("THEN >>>>> ");
-  //   console.log(response);
-  // })
-  // .catch(function (error) {
-  //   console.log(error);
-  // });
-
+  var checkAccount = "FAILED"
   await axios({
     method:'POST',
     url:'https://tqf.cpe.ku.ac.th/authen/',
-    formData: form,
+    headers: { 'Content-Type': form.getHeaders()['content-type'] },
     data: form
   })
   .then(function (response) {
-      // res.json(response)
-      console.log(response)
+      checkAccount = response.data
+      console.log("Login Status: " + response.data)
+      res.json(response.data)
   });
+
 
 
 
