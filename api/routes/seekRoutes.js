@@ -28,4 +28,8 @@ module.exports = function(app) {
 
   app.route('/history/:userId/:requesterOrdeliverer')
     .get(orderController.getHistory)
+
+
+  app.route('/authen')
+    .get(userController.getAuthen)
 }

@@ -1,5 +1,7 @@
 'use struct';
-
+var axios = require('axios')
+var FormData = require('form-data')
+var request = require('request')
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
@@ -48,9 +50,32 @@ exports.updateUserInfo = function(req, res) {
   })
 }
 
+exports.getAuthen = async function(req, res) {
+  var form = new FormData();
+  form.append("login", "b5810545866");
+  form.append("password", "12324534"); //OUTPUT: failed
 
-// MyModel.update({ age: { $gt: 18 } }, { oldEnough: true }, fn);
-// MyModel.update({ name: 'Tobi' }, { ferret: true }, { multi: true }, function (err, raw) {
-//   if (err) return handleError(err);
-//   console.log('The raw response from Mongo was ', raw);
-// });
+  // axios.post('https://tqf.cpe.ku.ac.th/authen/', mu)
+  // .then(function (response) {
+  //   res.json(response.statusText)
+  //   console.log("THEN >>>>> ");
+  //   console.log(response);
+  // })
+  // .catch(function (error) {
+  //   console.log(error);
+  // });
+
+  await axios({
+    method:'POST',
+    url:'https://tqf.cpe.ku.ac.th/authen/',
+    formData: form,
+    data: form
+  })
+  .then(function (response) {
+      // res.json(response)
+      console.log(response)
+  });
+
+
+
+}

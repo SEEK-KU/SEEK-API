@@ -6,15 +6,26 @@ var express = require('express'),
   Order = require('./api/models/orderDatabaseModel')
   bodyParser = require('body-parser');
 
+
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://seekku:seek123456@cluster0-sdrw5.gcp.mongodb.net/test?retryWrites=true";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+  
+
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-const URL = 'mongodb://localhost/seekDB';
+const URL = "mongodb+srv://seekku:seek123456@cluster0-sdrw5.gcp.mongodb.net/test?retryWrites=true";
 function callback(err, result) {
   if (err) {
     throw err;
   }
 }
-mongoose.connect(URL, callback);
+mongoose.connect(URL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
