@@ -23,12 +23,9 @@ exports.getNewfeed = async function(req, res) {
   
   var feed = []
   for(var i=0; i< activeOrder.length; i++) {
-    var order = {
-      requester: {
-        requesterId: "",
-        firstname: "",
-        lastname: ""
-      },
+    var userInfo
+    var orderTemplate = {
+      requester: {},
       _id: activeOrder[i]._id,
       title: activeOrder[i].title,
       location: activeOrder[i].location,
@@ -38,17 +35,16 @@ exports.getNewfeed = async function(req, res) {
       createAt: activeOrder[i].createAt,
       tip: activeOrder[i].tip
     }
-
-    await User.findOne({stdId: activeOrder[i].requesterId}, function(err, user) {
+    await User.findOne({stdId: activeOrder[i].requesterId}, 'firstname lastname', function(err, user) {
       if(err)
         res.send(err)
-      order.requester._id = activeOrder[i].requesterId
-      order.requester.firstname = user.firstname
-      order.requester.lastname = user.lastname
-    })
-    feed.push(order)
-  }
 
+      orderTemplate.requester = user
+    })
+
+    feed.push(orderTemplate)
+  }
+  console.log(feed)
   res.json(feed)
 }
 
