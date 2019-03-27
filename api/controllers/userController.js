@@ -16,7 +16,7 @@ exports.getAllUsers = function(req, res) {
 
 //Find user by student Id
 exports.getUserById = function(req, res) {
-  User.findOne({stdId: req.params.userId}, 'firstname lastname', function(err, user) {
+  User.findOne({stdId: req.params.userId}, 'firstname lastname faculty stdId telephone img', function(err, user) {
     if(err)
       res.send(err)
     res.json(user)
