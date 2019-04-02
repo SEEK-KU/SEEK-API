@@ -56,13 +56,13 @@ exports.getOrderInfo = async function(req, res) {
     if (err)
       res.send(err)
   })
-
-  orderDetail.requester = await User.findOne({userId: orderDetail.orderInfo.requesterId}, function(err, user) {
+  
+  orderDetail.requester = await User.findOne({stdId: orderDetail.orderInfo.requesterId}, function(err, user) {
     if (err)
       res.send(err)
   })
-
-  orderDetail.deliver = await User.findOne({userId: orderDetail.orderInfo.deliverId}, function(err, user) {
+  
+  orderDetail.deliver = await User.findOne({stdId: orderDetail.orderInfo.deliverId}, function(err, user) {
     if (err) 
       res.send(err)
   })
