@@ -5,13 +5,12 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
 //Find order by status
-exports.getOrderByStatus = function(req, res) {
-  Order.find({status: req.params.status}, function(err, order) {
+exports.getOrderByStatus = async function(req, res) {
+  var orderByStatus = await Order.find({status: req.params.status}, function(err, order) {
     if (err)
       res.send(err)
-    res.json(order)
   })
-
+  res.json(orderByStatus)
 }
 exports.getNewfeed = async function(req, res) {
   var activeOrder = await Order.find({status: 'Active'}, function(err, order) {
@@ -53,26 +52,19 @@ exports.getOrderInfo = async function(req, res) {
     requester: {},
     deliver: {}
   }
-  await Order.findOne({_id: req.params.orderId}, function(err, order) {
+  orderDetail.orderInfo = await Order.findOne({_id: req.params.orderId}, function(err, order) {
     if (err)
       res.send(err)
-    orderDetail.orderInfo = order
-    
   })
 
-  await User.findOne({userId: orderDetail.orderInfo.requesterId}, function(err, user) {
-    if (err) {
+  orderDetail.requester = await User.findOne({userId: orderDetail.orderInfo.requesterId}, function(err, user) {
+    if (err)
       res.send(err)
-    }  
-    orderDetail.requester = user
-    console.log(orderDetail.orderInfo.requesterId)
   })
 
-  await User.findOne({userId: orderDetail.orderInfo.deliverId}, function(err, user) {
-    if (err) {
+  orderDetail.deliver = await User.findOne({userId: orderDetail.orderInfo.deliverId}, function(err, user) {
+    if (err) 
       res.send(err)
-    }  
-    orderDetail.deliver = user
   })
 
   res.json(orderDetail)
@@ -80,22 +72,21 @@ exports.getOrderInfo = async function(req, res) {
 
 //Create new order
 exports.createNewOrder = async function(req, res) {
-  var postId
   var newOrder = new Order(req.body);
-  await newOrder.save(function(err, order) {
+  var reuturnData = await newOrder.save(function(err, order) {
     if(err)
       res.send(err)
-    res.json(order)
   })
+  res.json(reuturnData)
 }
 
 //Update order
-exports.updateOrderInfo = function(req, res) {
-  Order.update({_id: req.params.orderId}, req.body, function (err, order) {
+exports.updateOrderInfo = async function(req, res) {
+  var reuturnData = await Order.update({_id: req.params.orderId}, req.body, function (err, order) {
     if(err)
       res.send(err)
-    res.send("Order Updated!")
   })
+  res.send("Order Updated!")
 }
 
 exports.deleteOrderById = function(req, res) {
@@ -113,18 +104,18 @@ exports.deleteOrderById = function(req, res) {
 
 exports.getHistory = async function(req, res) {
   if(req.params.requesterOrdeliverer == "requester") {
-    await Order.find({requesterId: req.params.userId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
+    var returnHistory = await Order.find({requesterId: req.params.userId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
       if(err)
         res.send(err)
-      res.json(order)
     })
+    res.json(returnHistory)
   }
   else if(req.params.requesterOrdeliverer == "deliverer") {
-    await Order.find({delivererId: req.params.userId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
+    var returnHistory = await Order.find({delivererId: req.params.userId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
       if(err)
         res.send(err)
-      res.json(order)
     })
+    res.json(returnHistory)
   }
 
 }
