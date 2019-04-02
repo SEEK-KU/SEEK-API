@@ -14,12 +14,10 @@ exports.getOrderByStatus = function(req, res) {
 
 }
 exports.getNewfeed = async function(req, res) {
-  var activeOrder = []
-  await Order.find({status: 'Active'}, function(err, order) {
+  var activeOrder = await Order.find({status: 'Active'}, function(err, order) {
     if (err)
       res.send(err) 
-    activeOrder = order
-  })
+  }).sort({createAt: 'desc'})
   
   var feed = []
   for(var i=0; i< activeOrder.length; i++) {
@@ -35,17 +33,17 @@ exports.getNewfeed = async function(req, res) {
       createAt: activeOrder[i].createAt,
       tip: activeOrder[i].tip
     }
-    await User.findOne({stdId: activeOrder[i].requesterId}, 'firstname lastname', function(err, user) {
+    orderTemplate.requester = await User.findOne({stdId: activeOrder[i].requesterId}, 'firstname lastname', function(err, user) {
       if(err)
         res.send(err)
-
-      orderTemplate.requester = user
     })
 
     feed.push(orderTemplate)
+
   }
   console.log(feed)
   res.json(feed)
+
 }
 
 //Find order info by postId
