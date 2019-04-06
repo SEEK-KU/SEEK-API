@@ -3,15 +3,20 @@ module.exports = function(app) {
   var userController = require('../controllers/userController');
   var orderController = require('../controllers/orderController');
 
-  app.route('/user')
-    .get(userController.getAllUsers)
-    .post(userController.createNewUser);
+  app.route('/users')
+  .get(userController.getAllUsers)
 
-  app.route('/user/:userId')
-    .get(userController.getUserById)
+  app.route('/user')
+    .post(userController.createNewUser)
     .put(userController.updateUserInfo)
     .delete(userController.deleteUserById)
 
+  app.route('/user/history')
+    .get(userController.getHistory)
+
+  app.route('/user/:userId')
+    .get(userController.getUserById)
+    
   app.route('/order')
   .post(orderController.createNewOrder) 
 
@@ -26,10 +31,9 @@ module.exports = function(app) {
   app.route('/feed')
     .get(orderController.getNewfeed)
 
-  app.route('/history/:userId/:requesterOrdeliverer')
-    .get(orderController.getHistory)
+  // app.route('/authen')
+  //   .get(userController.getAuthen)
 
-
-  app.route('/authen')
-    .get(userController.getAuthen)
+  app.route('/login')
+    .post(userController.loginByNontri)
 }

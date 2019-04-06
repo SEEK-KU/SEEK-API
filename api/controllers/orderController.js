@@ -102,20 +102,3 @@ exports.deleteOrderById = function(req, res) {
   // });
 }
 
-exports.getHistory = async function(req, res) {
-  if(req.params.requesterOrdeliverer == "requester") {
-    var returnHistory = await Order.find({requesterId: req.params.userId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
-      if(err)
-        res.send(err)
-    })
-    res.json(returnHistory)
-  }
-  else if(req.params.requesterOrdeliverer == "deliverer") {
-    var returnHistory = await Order.find({delivererId: req.params.userId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
-      if(err)
-        res.send(err)
-    })
-    res.json(returnHistory)
-  }
-
-}
