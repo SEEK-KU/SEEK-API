@@ -16,7 +16,7 @@ exports.getOrderByStatus = async function(req, res) {
   res.json(orderByStatus)
 }
 exports.getNewfeed = async function(req, res) {
-  var activeOrder = await Order.find({status: 'Active'}, function(err, order) {
+  var activeOrder = await Order.find({status: 'ACTIVE'}, function(err, order) {
     if (err)
       res.send(err) 
   }).sort({createAt: 'desc'})
@@ -93,9 +93,9 @@ exports.deleteOrderById = function(req, res) {
   Order.deleteOne({_id: req.params.orderId}, function(err, order) {
     if(err)
       res.send(err)
-    res.send("Delete order sucess!")
+    res.send("Delete order success!")
   });
-  // Order.deleteMany({status: 'Active'}, function(err, order) {
+  // Order.deleteMany({status: 'ACTIVE'}, function(err, order) {
   //   if(err)
   //     res.send(err)
   //   res.send("Delete order sucess!")
