@@ -22,7 +22,10 @@ var OrderSchema = new Schema ({
     default: ['Active']
   },
   itemQty: Number,
-  itemList:[],
+  itemList:{
+    type: Array,
+    default: []
+  },
   tip: Number,
   note: String
 })
