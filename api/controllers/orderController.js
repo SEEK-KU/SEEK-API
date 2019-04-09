@@ -1,5 +1,8 @@
 'use struct';
 
+
+const orderDatabaseModel = require('../models/orderDatabaseModel.js');
+
 var mongoose = require('mongoose'),
   Order = mongoose.model('Order');
   User = mongoose.model('User');
@@ -82,10 +85,7 @@ exports.createNewOrder = async function(req, res) {
 
 //Update order
 exports.updateOrderInfo = async function(req, res) {
-  var reuturnData = await Order.update({_id: req.params.orderId}, req.body, function (err, order) {
-    if(err)
-      res.send(err)
-  })
+  var reuturnData = await orderDatabaseModel.findByIdAndUpdate(req.params.orderId, req.body.orderInfo)
   res.send("Order Updated!")
 }
 
