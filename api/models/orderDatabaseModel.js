@@ -18,8 +18,8 @@ var OrderSchema = new Schema ({
   shippingTime: Date,
   status: {
     type: String,
-    enum: ['Active', 'Achieved', 'Processing', 'Shipping', 'Completed'],
-    default: ['Active']
+    enum: ['ACTIVE', 'ARCHIVED', 'PENDING', 'ACCEPTED', 'PROCESSING', 'SHIPPING', 'COMPLETED'],
+    default: ['ACTIVE']
   },
   itemQty: Number,
   itemList:{

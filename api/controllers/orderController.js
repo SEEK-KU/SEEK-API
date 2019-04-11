@@ -16,7 +16,7 @@ exports.getOrderByStatus = async function(req, res) {
   res.json(orderByStatus)
 }
 exports.getNewfeed = async function(req, res) {
-  var activeOrder = await Order.find({status: 'Active'}, function(err, order) {
+  var activeOrder = await Order.find({status: 'ACTIVE'}, function(err, order) {
     if (err)
       res.send(err) 
   }).sort({createAt: 'desc'})
@@ -55,20 +55,11 @@ exports.getOrderInfo = async function(req, res) {
     requester: {},
     deliver: {}
   }
-  orderDetail.orderInfo = await Order.findOne({_id: req.params.orderId}, function(err, order) {
-    if (err)
-      res.send(err)
-  })
+  orderDetail.orderInfo = await Order.findOne({_id: req.params.orderId})
   
-  orderDetail.requester = await User.findOne({stdId: orderDetail.orderInfo.requesterId}, function(err, user) {
-    if (err)
-      res.send(err)
-  })
+  orderDetail.requester = await User.findOne({stdId: orderDetail.orderInfo.requesterId})
   
-  orderDetail.deliver = await User.findOne({stdId: orderDetail.orderInfo.deliverId}, function(err, user) {
-    if (err) 
-      res.send(err)
-  })
+  orderDetail.deliver = await User.findOne({stdId: orderDetail.orderInfo.delivererId})
 
   res.json(orderDetail)
 }
@@ -76,10 +67,7 @@ exports.getOrderInfo = async function(req, res) {
 //Create new order
 exports.createNewOrder = async function(req, res) {
   var newOrder = new Order(req.body);
-  var reuturnData = await newOrder.save(function(err, order) {
-    if(err)
-      res.send(err)
-  })
+  var reuturnData = await newOrder.save()
   res.json(reuturnData)
 }
 
@@ -89,13 +77,10 @@ exports.updateOrderInfo = async function(req, res) {
   res.send("Order Updated!")
 }
 
-exports.deleteOrderById = function(req, res) {
-  Order.deleteOne({_id: req.params.orderId}, function(err, order) {
-    if(err)
-      res.send(err)
-    res.send("Delete order sucess!")
-  });
-  // Order.deleteMany({status: 'Active'}, function(err, order) {
+exports.deleteOrderById = async function(req, res) {
+  await Order.deleteOne({_id: req.params.orderId})
+    res.send("Delete order success!")
+  // Order.deleteMany({status: 'ACTIVE'}, function(err, order) {
   //   if(err)
   //     res.send(err)
   //   res.send("Delete order sucess!")
