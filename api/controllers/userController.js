@@ -90,7 +90,7 @@ exports.getAuthen = async function(req, res) {
 exports.loginByNontri = async function(req, res) {
   //1) check correct NotriAccount
   var form = new FormData();
-  form.append("login", req.body.username);
+  form.append("login", req.body.userId);
   form.append("password", req.body.password); //OUTPUT: failed
 
   var checkAccount = await axios({
