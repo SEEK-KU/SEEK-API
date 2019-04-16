@@ -119,7 +119,7 @@ exports.loginByNontri = async function(req, res) {
     if(userInfo) {
       returnData = {
         token: token,
-        isUpdateUserData: false
+        havetoSignup: false
       }
     } else {
       //create new data
