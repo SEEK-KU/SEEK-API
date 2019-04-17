@@ -18,7 +18,14 @@ exports.getAllUsers = function(req, res) {
 
 //Find user by student Id
 exports.getUserById = function(req, res) {
-  User.findOne({stdId: req.params.userId}, 'firstname lastname faculty stdId telephone img', function(err, user) {
+  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+    if (err) {
+      res.send(err)
+    }
+      return decoded
+  });
+
+  User.findOne({stdId: verifyToken.stdId}, 'firstname lastname faculty stdId telephone img', function(err, user) {
     if(err)
       res.send(err)
     res.json(user)

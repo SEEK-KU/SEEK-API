@@ -10,12 +10,10 @@ module.exports = function(app) {
     .post(userController.createNewUser)
     .put(userController.updateUserInfo)
     .delete(userController.deleteUserById)
+    .get(userController.getUserById)
 
   app.route('/user/history')
     .get(userController.getHistory)
-
-  app.route('/user/:userId')
-    .get(userController.getUserById)
     
   app.route('/order')
   .post(orderController.createNewOrder) 
