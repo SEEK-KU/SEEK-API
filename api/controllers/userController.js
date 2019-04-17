@@ -17,7 +17,7 @@ exports.getAllUsers = function(req, res) {
 }
 
 //Find user by student Id
-exports.getUserById = function(req, res) {
+exports.getUserById = async function(req, res) {
   var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
     if (err) {
       res.send(err)
@@ -112,11 +112,14 @@ exports.loginByNontri = async function(req, res) {
   
   if (checkAccount == 'OK') {
     //2. Generate Token
-    var token = jwt.sign({ stdId: req.body.userId}, 'seeklovelyshopping')
+    var Id = req.body.userId
+    var subStringToken = Id.substr(1)
+    var token = jwt.sign({ stdId: subStringToken}, 'seeklovelyshopping')
+    
     console.log(token)
 
     //3) find user in database
-    var userInfo =  await User.findOne({stdId: req.body.userId}, 'firstname lastname faculty stdId telephone img', function(err, user) {
+    var userInfo =  await User.findOne({stdId: subStringToken}, 'firstname lastname faculty stdId telephone img', function(err, user) {
       if(err)
         res.send(err)
     })
