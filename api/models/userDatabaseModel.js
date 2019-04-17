@@ -8,7 +8,13 @@ var UserSchema = new Schema ({
   lastname: String,
   faculty: String,
   telephone: String,
-  img: ""
+  img: String,
+  paymentInfo: {
+    qrImage: String,
+    bank: String,
+    accountNumber: String,
+    accountName: String
+  }
 })
 
 module.exports = mongoose.model('User', UserSchema)

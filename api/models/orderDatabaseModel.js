@@ -27,7 +27,7 @@ var OrderSchema = new Schema ({
     default: []
   },
   tip: Number,
-  slit: String,
+  slip: String,
   note: String
 })
 

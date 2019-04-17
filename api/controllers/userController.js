@@ -139,7 +139,13 @@ exports.loginByNontri = async function(req, res) {
         lastname: '',
         faculty: '',
         telephone: '',
-        img: ''
+        img: '',
+        payment: {
+          qrImage: '',
+          bank: '',
+          accountNumber: '',
+          accountName: ''
+        }
       });
       await newUser.save(function(err, user) {
         if(err)
