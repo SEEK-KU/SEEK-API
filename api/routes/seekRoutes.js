@@ -25,6 +25,9 @@ module.exports = function(app) {
     .get(orderController.getOrderInfo)
     .put(orderController.updateOrderInfo)
     .delete(orderController.deleteOrderById)
+   
+  app.route('/uploadSlip')
+    .put(orderController.uploadPaymentSlip)
   
   app.route('/feed')
     .get(orderController.getNewfeed)
@@ -34,4 +37,7 @@ module.exports = function(app) {
 
   app.route('/login')
     .post(userController.loginByNontri)
+
+  app.route('/getUserQR')
+    .get(userController.getUserQR)
 }

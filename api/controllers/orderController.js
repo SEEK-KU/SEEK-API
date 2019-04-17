@@ -87,3 +87,10 @@ exports.deleteOrderById = async function(req, res) {
   // });
 }
 
+exports.uploadPaymentSlip = async function (req, res) {
+  await Order.updateOne({_id: req.body.postId}, {$set: {"slip": req.body.slip}}, function (err, order) {
+    if(err)
+      res.send(err)
+    res.json("success!")
+  })
+}

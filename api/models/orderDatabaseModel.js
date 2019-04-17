@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var OrderSchema = new Schema ({
-  postId: String,
   requesterId: String,
   delivererId: String,
   createAt: { type: Date, default: Date.now },

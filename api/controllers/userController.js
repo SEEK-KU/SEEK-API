@@ -18,7 +18,7 @@ exports.getAllUsers = function(req, res) {
 
 //Find user by student Id
 exports.getUserById = async function(req, res) {
-  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
     if (err) {
       res.send(err)
     }
@@ -44,7 +44,7 @@ exports.createNewUser = function(req, res) {
 
 //Delete user
 exports.deleteUserById = async function(req, res) {
-  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
     if (err) {
       res.send(err)
     }
@@ -60,7 +60,7 @@ exports.deleteUserById = async function(req, res) {
 }
 
 exports.updateUserInfo = async function(req, res) {
-  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
     if (err) {
       res.send(err)
     }
@@ -97,8 +97,8 @@ exports.getAuthen = async function(req, res) {
 exports.loginByNontri = async function(req, res) {
   //1) check correct NotriAccount
   var form = new FormData();
-  form.append("login", req.body.userId);
-  form.append("password", req.body.password); //OUTPUT: failed
+  form.append("login", req.headers.userId);
+  form.append("password", req.headers.password); //OUTPUT: failed
 
   var checkAccount = await axios({
     method:'POST',
@@ -112,7 +112,7 @@ exports.loginByNontri = async function(req, res) {
   
   if (checkAccount == 'OK') {
     //2. Generate Token
-    var Id = req.body.userId
+    var Id = req.headers.userId
     var subStringToken = Id.substr(1)
     var token = jwt.sign({ stdId: subStringToken}, 'seeklovelyshopping')
     
@@ -134,7 +134,7 @@ exports.loginByNontri = async function(req, res) {
     } else {
       //create new data
       var newUser = new User({
-        stdId: req.body.userId,
+        stdId: subStringToken,
         firstname: '',
         lastname: '',
         faculty: '',
@@ -163,7 +163,7 @@ exports.loginByNontri = async function(req, res) {
 }
 
 exports.getHistory = async function(req, res) {
-  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
     if (err) {
       res.send(err)
     }
@@ -171,14 +171,14 @@ exports.getHistory = async function(req, res) {
   });
   console.log(verifyToken.stdId)
 
-  if(req.body.historyType == "requester") {
+  if(req.headers.historyType == "requester") {
     var returnHistory = await Order.find({requesterId: verifyToken.stdId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
       if(err)
         res.send(err)
     }).sort({createAt: 'desc'})
     res.json(returnHistory)
   }
-  else if(req.body.historyType == "deliverer") {
+  else if(req.headers.historyType == "deliverer") {
     var returnHistory = await Order.find({delivererId: verifyToken.stdId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
       if(err)
         res.send(err)
@@ -186,4 +186,19 @@ exports.getHistory = async function(req, res) {
     res.json(returnHistory)
   }
 
+}
+
+exports.getUserQR = async function(req, res) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
+    if (err) {
+      res.send(err)
+    }
+      return decoded
+  })
+
+  var qrImage = User.findOne({stdId: verifyToken}, 'qrImage', function(err, user) {
+    if(err)
+      res.send(err)
+  })
+  res.json(qrImage)
 }
