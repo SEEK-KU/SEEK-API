@@ -97,8 +97,8 @@ exports.getAuthen = async function(req, res) {
 exports.loginByNontri = async function(req, res) {
   //1) check correct NotriAccount
   var form = new FormData();
-  form.append("login", req.headers.userId);
-  form.append("password", req.headers.password); //OUTPUT: failed
+  form.append("login", req.body.userId);
+  form.append("password", req.body.password); //OUTPUT: failed
 
   var checkAccount = await axios({
     method:'POST',
@@ -112,7 +112,7 @@ exports.loginByNontri = async function(req, res) {
   
   if (checkAccount == 'OK') {
     //2. Generate Token
-    var Id = req.headers.userId
+    var Id = req.body.userId
     var subStringToken = Id.substr(1)
     var token = jwt.sign({ stdId: subStringToken}, 'seeklovelyshopping')
     
