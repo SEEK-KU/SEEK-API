@@ -167,19 +167,18 @@ exports.getHistory = async function(req, res) {
     if (err) {
       res.send(err)
     }
-      return decoded
-  });
-  console.log(verifyToken.stdId)
+      return decoded.stdId
+  })
 
-  if(req.headers.historyType == "requester") {
-    var returnHistory = await Order.find({requesterId: verifyToken.stdId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
+  if(req.headers.historytype == "requester") {
+    var returnHistory = await Order.find({requesterId: verifyToken}, 'title createAt location shippingPoint itemList tips', function(err, order) {
       if(err)
         res.send(err)
     }).sort({createAt: 'desc'})
     res.json(returnHistory)
   }
-  else if(req.headers.historyType == "deliverer") {
-    var returnHistory = await Order.find({delivererId: verifyToken.stdId}, 'title createAt location shippingPoint itemList tips', function(err, order) {
+  else if(req.headers.historytype == "deliverer") {
+    var returnHistory = await Order.find({delivererId: verifyToken}, 'title createAt location shippingPoint itemList tips', function(err, order) {
       if(err)
         res.send(err)
     }).sort({createAt: 'desc'})
