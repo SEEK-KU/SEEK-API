@@ -1,5 +1,6 @@
 'use struct';
 
+var jwt = require('jsonwebtoken')
 
 const orderDatabaseModel = require('../models/orderDatabaseModel.js');
 
@@ -66,14 +67,14 @@ exports.getOrderInfo = async function(req, res) {
 
 //Create new order
 exports.createNewOrder = async function(req, res) {
-  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
     if (err) {
       res.send(err)
     }
       return decoded
   })
-  var newOrder = new Order(req.body.orderInfo);
-  newOrder.requesterId = verifyToken
+  var newOrder = new Order(req.body);
+  newOrder.requesterId = verifyToken.stdId
   
   var reuturnData = await newOrder.save()
   res.json(reuturnData)
