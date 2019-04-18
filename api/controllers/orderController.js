@@ -66,7 +66,15 @@ exports.getOrderInfo = async function(req, res) {
 
 //Create new order
 exports.createNewOrder = async function(req, res) {
-  var newOrder = new Order(req.body);
+  var verifyToken = await jwt.verify(req.body.token, 'seeklovelyshopping', function(err, decoded) {
+    if (err) {
+      res.send(err)
+    }
+      return decoded
+  })
+  var newOrder = new Order(req.body.orderInfo);
+  newOrder.requesterId = verifyToken
+  
   var reuturnData = await newOrder.save()
   res.json(reuturnData)
 }
