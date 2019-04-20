@@ -190,9 +190,7 @@ exports.getUserQR = async function(req, res) {
       return decoded
   })
 
-  var qrImage = User.findOne({stdId: verifyToken}, 'qrImage', function(err, user) {
-    if(err)
-      res.send(err)
-  })
-  res.json(qrImage)
+  var foundUser = await User.findOne({stdId: verifyToken.stdId})
+  const { qrImage } = foundUser
+  res.json({qrImage})
 }
