@@ -18,6 +18,9 @@ module.exports = function(app) {
   app.route('/order')
   .post(orderController.createNewOrder) 
 
+  app.route('/order/updateStatus')
+    .put(orderController.updateOrderStatus)
+
   app.route('/order/status/:status')
     .get(orderController.getOrderByStatus)
 
@@ -40,4 +43,5 @@ module.exports = function(app) {
 
   app.route('/getUserQR')
     .get(userController.getUserQR)
+    .put(userController.uploadUserQR)
 }

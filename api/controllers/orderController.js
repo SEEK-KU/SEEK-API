@@ -103,3 +103,23 @@ exports.uploadPaymentSlip = async function (req, res) {
     res.json("success!")
   })
 }
+exports.updateOrderStatus = async function (req, res) {
+  const enumStatus = ['ACTIVE', 'PENDING_UPDATEPRICE', 'PENDING_CONFIRMPRICE', 'ACCEPTED', 'PROCESSING', 'SHIPPING', 'COMPLETED']
+  const indexStatus = {
+    'ACTIVE': 0,
+    'PENDING_UPDATEPRICE': 1,
+    'PENDING_CONFIRMPRICE': 2,
+    'ACCEPTED': 3,
+    'PROCESSING': 4,
+    'SHIPPING': 5,
+    'COMPLETED': 6
+  }
+
+  var newStatus = enumStatus[ indexStatus[req.body.status]+1 ]
+
+  await Order.updateOne({_id: req.body.postId}, {$set: {"status": newStatus}}, function (err, order) {
+    if(err)
+      res.send(err)
+    res.json("success! " + req.body.status + " >>> " + newStatus)
+  })
+}

@@ -190,7 +190,23 @@ exports.getUserQR = async function(req, res) {
       return decoded
   })
 
+  //Have Edit again
   var foundUser = await User.findOne({stdId: verifyToken.stdId})
   const { qrImage } = foundUser
   res.json({qrImage})
+}
+
+exports.uploadUserQR = async function(req, res) {
+  var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
+    if (err) {
+      res.send(err)
+    }
+      return decoded
+  })
+
+  await User.updateOne({stdId: verifyToken.stdId}, {$set: {'qrImage': req.body.qrLink} }, function (err, order) {
+    if(err)
+      res.send(err)
+    res.json("Upload QR success!")
+  })
 }
