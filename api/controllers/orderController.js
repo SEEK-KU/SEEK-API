@@ -82,8 +82,22 @@ exports.createNewOrder = async function(req, res) {
 
 //Update order
 exports.updateOrderInfo = async function(req, res) {
-  var reuturnData = await orderDatabaseModel.findByIdAndUpdate(req.params.orderId, req.body.orderInfo)
-  res.send("Order Updated!")
+  let delivererId = ""
+  if(req.headers.token) {
+    var verifyToken = jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
+      if (err) {
+        res.send(err)
+      }
+      return decoded
+    })
+    delivererId = verifyToken.stdId
+  }
+  const orderInfo = req.body.orderInfo
+  console.log("reqBody", orderInfo)
+  const mergedOrderInfo = delivererId ? Object.assign({},orderInfo,{delivererId}) : orderInfo
+  console.log(mergedOrderInfo)
+  var reuturnData = await orderDatabaseModel.findByIdAndUpdate(req.params.orderId, mergedOrderInfo, {new: true})
+  res.send(reuturnData)
 }
 
 exports.deleteOrderById = async function(req, res) {
@@ -103,6 +117,7 @@ exports.uploadPaymentSlip = async function (req, res) {
     res.json("success!")
   })
 }
+
 exports.updateOrderStatus = async function (req, res) {
   const enumStatus = ['ACTIVE', 'PENDING_UPDATEPRICE', 'PENDING_CONFIRMPRICE', 'ACCEPTED', 'PROCESSING', 'SHIPPING', 'COMPLETED']
   const indexStatus = {
@@ -115,25 +130,9 @@ exports.updateOrderStatus = async function (req, res) {
     'COMPLETED': 6
   }
 
-  if(req.body.status == 'ACTIVE') {
-    var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
-      if (err) 
-        res.send(err)
-      return decoded.stdId
-    })
-
-    await Order.updateOne({_id: req.body.postId}, {$set: {"delivererId": verifyToken}}, function (err, order) {
-      if(err)
-        res.send(err)
-      console.log(order.delivererId)
-    })
-  }
-
   var newStatus = enumStatus[ indexStatus[req.body.status]+1 ]
 
-  await Order.updateOne({_id: req.body.postId}, {$set: {"status": newStatus}}, function (err, order) {
-    if(err)
-      res.send(err)
-    res.json("success! " + req.body.status + " >>> " + newStatus)
-  })
+  const updatedOrder = await Order.findOneAndUpdate({_id: req.body.postId}, {"status": newStatus}, {new: true})
+  res.json(updatedOrder)
+
 }
