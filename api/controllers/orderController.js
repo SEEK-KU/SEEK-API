@@ -115,6 +115,20 @@ exports.updateOrderStatus = async function (req, res) {
     'COMPLETED': 6
   }
 
+  if(req.body.status == 'ACTIVE') {
+    var verifyToken = await jwt.verify(req.headers.token, 'seeklovelyshopping', function(err, decoded) {
+      if (err) 
+        res.send(err)
+      return decoded.stdId
+    })
+
+    await Order.updateOne({_id: req.body.postId}, {$set: {"delivererId": verifyToken}}, function (err, order) {
+      if(err)
+        res.send(err)
+      console.log(order.delivererId)
+    })
+  }
+
   var newStatus = enumStatus[ indexStatus[req.body.status]+1 ]
 
   await Order.updateOne({_id: req.body.postId}, {$set: {"status": newStatus}}, function (err, order) {
