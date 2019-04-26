@@ -6,17 +6,6 @@ var express = require('express'),
   Order = require('./api/models/orderDatabaseModel')
   bodyParser = require('body-parser');
 
-
-// const MongoClient = require('mongodb').MongoClient;
-// const uri = "mongodb+srv://seekku:seek123456@cluster0-sdrw5.gcp.mongodb.net/test?retryWrites=true";
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
-  
-
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 const URL = "mongodb+srv://seekku:seek123456@cluster0-sdrw5.gcp.mongodb.net/test?retryWrites=true";
@@ -31,7 +20,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
 });
-// mongoose.connect('mongodb://127.0.0.1:27017'); 
 
 
 app.use(bodyParser.urlencoded({ extended: true}));

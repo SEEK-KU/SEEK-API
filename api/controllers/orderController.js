@@ -103,11 +103,6 @@ exports.updateOrderInfo = async function(req, res) {
 exports.deleteOrderById = async function(req, res) {
   await Order.deleteOne({_id: req.params.orderId})
     res.send("Delete order success!")
-  // Order.deleteMany({status: 'ACTIVE'}, function(err, order) {
-  //   if(err)
-  //     res.send(err)
-  //   res.send("Delete order sucess!")
-  // });
 }
 
 exports.uploadPaymentSlip = async function (req, res) {

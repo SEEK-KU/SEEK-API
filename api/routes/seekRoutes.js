@@ -35,9 +35,6 @@ module.exports = function(app) {
   app.route('/feed')
     .get(orderController.getNewfeed)
 
-  // app.route('/authen')
-  //   .get(userController.getAuthen)
-
   app.route('/login')
     .post(userController.loginByNontri)
 
